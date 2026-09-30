@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Двор">
+<meta name="color-scheme" content="light dark">
+<title>Двор — дворовый футбол</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDEFEA; --surface:#FFFFFF; --surface2:#E2E6DF; --line:#D2D7CF;
+  --text:#14171A; --muted:#66707A; --accent:#F2C230; --accent-ink:#1B1600;
+  --danger:#C93B26; --sheet:#FFFFFF; --backdrop:rgba(10,12,14,.45);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161A; --surface:#1E2227; --surface2:#2A2F36; --line:#333941;
+    --text:#F0F2EE; --muted:#9BA3AB; --accent:#F2C230; --accent-ink:#1B1600;
+    --danger:#F0705B; --sheet:#1E2227; --backdrop:rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14161A; --surface:#1E2227; --surface2:#2A2F36; --line:#333941;
+  --text:#F0F2EE; --muted:#9BA3AB; --accent:#F2C230; --accent-ink:#1B1600;
+  --danger:#F0705B; --sheet:#1E2227; --backdrop:rgba(0,0,0,.6);
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Golos Text',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.4;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;touch-action:manipulation}
+input{font:inherit;color:inherit;font-size:16px}
+h1,h2{margin:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:88px 1fr 88px;align-items:center;min-height:52px;padding:0 12px;background:var(--bg)}
+.top h1{font-size:17px;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .brand{font-family:'Unbounded',system-ui,sans-serif;font-weight:800;font-size:22px;text-align:left;grid-column:1/3}
+.ghost{padding:10px 4px;color:var(--muted);font-weight:500;text-align:left}
+.top .ghost:last-child{text-align:right}
+.ghost.strong{color:var(--text);font-weight:700}
+.wrap{padding:8px 16px 140px;max-width:560px;margin:0 auto}
+.hint{color:var(--muted);font-size:14px;margin:8px 0}
+.empty{padding:56px 4px;color:var(--muted)}
+.empty h2{color:var(--text);font-size:22px;font-weight:700;margin-bottom:8px}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:6;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 60%,transparent)}
+.primary{display:block;width:100%;max-width:528px;margin:0 auto;padding:17px;border-radius:16px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:17px}
+.primary:active{transform:scale(.99)}
+.secondary{display:block;width:100%;padding:14px;border-radius:14px;background:var(--surface2);font-weight:600;margin-top:12px}
+.glist{list-style:none;margin:0;padding:0}
+.glist li{border-bottom:1px solid var(--line)}
+.grow{display:block;width:100%;text-align:left;padding:18px 2px}
+.gname{display:block;font-size:20px;font-weight:700;margin-bottom:4px}
+.gmeta{display:block;color:var(--muted);font-size:14px}
+/* scoreboard */
+.board{position:relative;border-radius:24px;overflow:hidden;margin-top:6px}
+.sides{display:grid;grid-template-columns:1fr 1fr}
+.side{background:var(--tc);color:var(--ti);padding:16px 8px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;min-height:250px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.side:active{filter:brightness(.94)}
+.tname{font-weight:700;font-size:17px;padding:6px 10px;border-radius:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.score{font-family:'Unbounded',system-ui,sans-serif;font-weight:800;font-size:clamp(64px,23vw,108px);line-height:1;margin:auto 0;padding:12px 0}
+.minus{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.18);color:inherit;font-size:24px;line-height:1;margin-bottom:8px}
+.streak{font-size:13px;opacity:.85}
+.swap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:var(--bg);color:var(--text);font-size:22px;box-shadow:0 2px 10px rgba(0,0,0,.25);z-index:2}
+.board-note{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:10px 4px 0}
+.clock{display:flex;align-items:center;gap:16px;margin:18px 0 12px}
+.play{flex:none;width:64px;height:64px;border-radius:50%;background:var(--surface2);font-size:24px}
+.time{font-family:'Unbounded',system-ui,sans-serif;font-weight:800;font-size:clamp(44px,14vw,60px);letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.time.over{color:var(--danger)}
+.textbtn{display:block;margin:12px auto 0;color:var(--muted);padding:8px;font-size:14px}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:22px -16px 0;padding:2px 16px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:12px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-weight:600;font-size:15px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.chip:active{background:var(--surface2)}
+.chip.add{border-style:dashed;color:var(--muted);font-weight:500}
+h2.sec{font-size:15px;font-weight:600;color:var(--muted);margin:28px 0 8px}
+.scroll{overflow-x:auto;margin:0 -4px;padding:0 4px}
+.tbl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
+.tbl th{font-weight:500;color:var(--muted);font-size:13px;padding:6px 4px;text-align:center}
+.tbl td{padding:10px 4px;text-align:center;border-top:1px solid var(--line)}
+.tbl .l{text-align:left}
+.tbl td.z{color:var(--muted)}
+.tbl td.nz{font-weight:700}
+.tbl tr[data-act]{cursor:pointer}
+.tbl tr[data-act]:active{background:var(--surface2)}
+.pt{min-width:340px}
+.pt .pn{display:inline-block;max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+.dot{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:8px;vertical-align:middle;flex:none}
+.card{display:inline-block;width:11px;height:15px;border-radius:2px;vertical-align:middle}
+.card.y{background:#EFC21F}.card.r{background:#D8412F}
+.menu{margin-top:26px}
+.menu button{display:flex;justify-content:space-between;align-items:center;width:100%;padding:16px 2px;border-top:1px solid var(--line);text-align:left;font-weight:500}
+.menu button::after{content:"›";color:var(--muted);font-size:20px}
+.menu button.danger{color:var(--danger)}
+.menu button.danger::after{content:""}
+.menu:last-child{border-bottom:0}
+/* forms */
+.fld{display:block;margin:14px 0}
+.fld>span{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
+input[type=text],input:not([type]),input[inputmode]{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.grp{margin-top:24px}
+.grp h2{font-size:15px;font-weight:600;color:var(--muted);margin-bottom:10px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{min-width:56px;padding:11px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-weight:600}
+.pill[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.radios{display:flex;flex-direction:column}
+.radio{display:flex;align-items:center;gap:12px;padding:13px 2px;text-align:left;border-top:1px solid var(--line)}
+.radio:first-child{border-top:0}
+.rd{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--muted)}
+.radio[aria-pressed="true"]{font-weight:700}
+.radio[aria-pressed="true"] .rd{border-color:var(--text);background:radial-gradient(circle,var(--text) 0 45%,transparent 50%)}
+.tabs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;margin-top:28px;border-bottom:1px solid var(--line)}
+.tabs button{padding:14px 0;font-weight:600;color:var(--muted);border-bottom:3px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
+.team-ed{padding-top:16px}
+.trow,.prow{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.swatch{flex:none;width:52px;height:52px;border-radius:14px;border:2px solid var(--line)}
+.pnum{flex:none;width:64px!important;text-align:center}
+.x{flex:none;width:40px;height:44px;font-size:22px;color:var(--muted)}
+/* sheet */
+.backdrop{position:fixed;inset:0;z-index:20;background:var(--backdrop);display:flex;align-items:flex-end;justify-content:center;animation:fade .15s ease-out}
+.panel{width:100%;max-width:560px;max-height:88vh;overflow-y:auto;background:var(--sheet);border-radius:24px 24px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px));animation:up .2s ease-out;overscroll-behavior:contain}
+.panel h2{font-size:19px;font-weight:700;margin-bottom:14px}
+.panel .sub{color:var(--muted);font-size:14px;margin:-8px 0 12px}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:none;opacity:1}}
+.list button.row,.list .row{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:14px 2px;border-top:1px solid var(--line);text-align:left}
+.list>:first-child{border-top:0!important}
+.num{color:var(--muted);min-width:28px;font-variant-numeric:tabular-nums}
+.grow1{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:44px;height:44px;border-radius:12px;background:var(--surface2);font-size:22px}
+.stepper b{min-width:28px;text-align:center;font-variant-numeric:tabular-nums}
+.colors{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.colors button{aspect-ratio:1;border-radius:16px;border:3px solid transparent}
+.colors button[aria-pressed="true"]{border-color:var(--text)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--surface2);border-radius:12px;padding:3px;margin-bottom:12px}
+.seg button{padding:10px 0;border-radius:10px;font-weight:600;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle{display:flex;justify-content:space-between;align-items:center;padding:14px 2px;border-top:1px solid var(--line);width:100%}
+.sw{width:50px;height:30px;border-radius:15px;background:var(--surface2);position:relative;flex:none}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:var(--muted);transition:transform .15s}
+.toggle[aria-pressed="true"] .sw{background:var(--accent)}
+.toggle[aria-pressed="true"] .sw::after{transform:translateX(20px);background:var(--accent-ink)}
+.best{border-radius:20px;padding:18px;background:var(--tc,var(--accent));color:var(--ti,var(--accent-ink));margin-bottom:12px}
+.best small{display:block;font-weight:600;opacity:.8}
+.best b{display:block;font-family:'Unbounded',system-ui,sans-serif;font-size:26px;margin-top:4px}
+.match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;padding:13px 2px;border-top:1px solid var(--line)}
+.match .r{text-align:right}
+.match b{font-family:'Unbounded',system-ui,sans-serif;font-size:18px}
+.legend div{display:flex;gap:14px;padding:6px 0}
+.legend dt{min-width:34px;color:var(--muted);font-weight:600}
+.legend{margin:0}
+.legend dd{margin:0}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;max-width:528px;margin:0 auto;display:none;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:14px;background:var(--text);color:var(--bg);font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.toast.on{display:flex}
+.toast button{color:var(--accent);font-weight:700;padding:4px 6px}
+:root[data-theme="light"] .toast button{color:#8A6A00}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .toast button{color:#8A6A00}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<input type="file" id="snd-file" accept="audio/*" hidden>
+<script>
+'use strict';
+/*LOGIC_START*/
+const uid=()=>Math.random().toString(36).slice(2,10);
+const RULES={
+  exact2:['Ровно 2 игры подряд',2],
+  w2:['Победитель остаётся до 2 игр',2],
+  w3:['Победитель остаётся до 3 игр',3],
+  w4:['Победитель остаётся до 4 игр',4],
+  inf:['Победитель остаётся всегда',Infinity]
+};
+const STATS=[['g','Гол'],['a','Ассист'],['s','Сейв'],['o','Отбор мяча'],['d','Дриблинг'],['u','Удар'],['p','Пас'],['y','Жёлтая карточка'],['r','Красная карточка']];
+const WEIGHT={g:3,a:2,s:1,o:1,d:1,u:1,p:1,y:-1,r:-3};
+const emptyStat=()=>({g:0,a:0,s:0,o:0,d:0,u:0,p:0,y:0,r:0});
+
+function rotate(onField,queue,streak,rule,sa,sb){
+  const [a,b]=onField, limit=RULES[rule][1];
+  const st={...streak};
+  st[a]=(st[a]||0)+1; st[b]=(st[b]||0)+1;
+  const q=[...queue];
+  if(q.length===0) return {onField:[a,b],queue:q,streak:st};
+  const leave=[];
+  if(rule==='exact2'){
+    if(st[a]>=2) leave.push(a);
+    if(st[b]>=2) leave.push(b);
+  }else if(sa!==sb){
+    const w=sa>sb?a:b, l=w===a?b:a;
+    leave.push(l);
+    if(st[w]>=limit) leave.push(w);
+  }else{
+    leave.push(st[b]>st[a]?b:a);
+  }
+  leave.forEach(t=>{st[t]=0;q.push(t)});
+  const nf=[a,b];
+  for(let i=0;i<2;i++){ if(leave.includes(nf[i])) nf[i]=q.shift(); }
+  return {onField:nf,queue:q,streak:st};
+}
+function freshLive(g){return {goals:[],stats:{},running:false,started:false,remaining:g.minutes*60,endAt:0}}
+function resetRotation(g){g.onField=[g.teams[0].id,g.teams[1].id];g.queue=g.teams.slice(2).map(t=>t.id);g.streak={}}
+function scoreOf(g,tid){return g.live.goals.filter(x=>x.team===tid).length}
+function standings(g,all){
+  const T={};
+  g.teams.forEach(t=>T[t.id]={t,i:0,w:0,d:0,l:0,gf:0,ga:0,pts:0});
+  g.matches.filter(m=>all||m.session===g.session).forEach(m=>{
+    const A=T[m.a],B=T[m.b]; if(!A||!B) return;
+    A.i++;B.i++;A.gf+=m.sa;A.ga+=m.sb;B.gf+=m.sb;B.ga+=m.sa;
+    if(m.sa>m.sb){A.w++;B.l++;A.pts+=3}
+    else if(m.sa<m.sb){B.w++;A.l++;B.pts+=3}
+    else{A.d++;B.d++;A.pts++;B.pts++}
+  });
+  return Object.values(T).sort((x,y)=>y.pts-x.pts||(y.gf-y.ga)-(x.gf-x.ga)||y.gf-x.gf);
+}
+function playerStats(g,all){
+  const sum={};
+  const add=(st)=>{for(const pid in st){const o=sum[pid]||(sum[pid]=emptyStat());for(const k in st[pid])o[k]=(o[k]||0)+st[pid][k]}};
+  g.matches.filter(m=>all||m.session===g.session).forEach(m=>add(m.stats||{}));
+  add(g.live.stats);
+  const out=[];
+  g.teams.forEach(t=>t.players.forEach(p=>out.push({...p,team:t,st:sum[p.id]||emptyStat()})));
+  return out;
+}
+const pScore=st=>Object.keys(WEIGHT).reduce((s,k)=>s+WEIGHT[k]*(st[k]||0),0);
+function addGoal(g,team,scorer,assist){
+  g.live.goals.push({team,scorer:scorer||null,assist:assist||null});
+  if(scorer){(g.live.stats[scorer]=g.live.stats[scorer]||emptyStat()).g++}
+  if(assist){(g.live.stats[assist]=g.live.stats[assist]||emptyStat()).a++}
+}
+function undoGoal(g,team){
+  for(let i=g.live.goals.length-1;i>=0;i--){
+    if(g.live.goals[i].team===team){
+      const x=g.live.goals.splice(i,1)[0];
+      if(x.scorer&&g.live.stats[x.scorer]) g.live.stats[x.scorer].g=Math.max(0,g.live.stats[x.scorer].g-1);
+      if(x.assist&&g.live.stats[x.assist]) g.live.stats[x.assist].a=Math.max(0,g.live.stats[x.assist].a-1);
+      return true;
+    }
+  }
+  return false;
+}
+function finishMatch(g){
+  const [a,b]=g.onField, sa=scoreOf(g,a), sb=scoreOf(g,b);
+  const snap=JSON.stringify({...g,undo:null});
+  g.matches.push({id:uid(),session:g.session,a,b,sa,sb,stats:g.live.stats,goals:g.live.goals,ts:Date.now()});
+  const r=rotate(g.onField,g.queue,g.streak,g.rule,sa,sb);
+  g.onField=r.onField;g.queue=r.queue;g.streak=r.streak;
+  g.live=freshLive(g);
+  g.undo=snap;
+}
+/*LOGIC_END*/
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const COLORS=[['#E4574B','Красный'],['#3B5BDB','Синий'],['#2FA45A','Зелёный'],['#9BC53D','Салатовый'],['#F08C2E','Оранжевый'],['#F5D33F','Жёлтый'],['#8E5BD6','Фиолетовый'],['#E872A6','Розовый'],['#29B6C9','Голубой'],['#E9ECEF','Белый'],['#2B2E33','Чёрный'],['#8B5E3C','Коричневый']];
+const DEF_COLORS=['#2FA45A','#3B5BDB','#E4574B','#F08C2E'];
+const ink=hex=>{const n=parseInt(hex.slice(1),16),r=n>>16,g=(n>>8)&255,b=n&255;return (0.299*r+0.587*g+0.114*b)>150?'#14171A':'#FFFFFF'};
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+
+/* ---------- storage ---------- */
+const KEY='dvor.v1';
+let S={games:[],settings:{theme:'auto',cols:{s:1,o:1,d:1,u:1,p:1,y:1,r:1}}};
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(raw){const o=JSON.parse(raw);const st=o.settings||{};
+      S={games:o.games||[],settings:{theme:st.theme||'auto',cols:{...S.settings.cols,...(st.cols||{})}}};}
+  }catch(e){}
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* ---------- sounds ---------- */
+let AC=null;
+const ctx=()=>{
+  if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}
+  if(AC.state==='suspended')AC.resume();
+  return AC;
+};
+function whistleBlast(c,t0,dur,f0){
+  const out=c.createGain();out.gain.setValueAtTime(0,t0);
+  out.gain.linearRampToValueAtTime(.55,t0+.03);out.gain.setValueAtTime(.55,t0+dur-.06);out.gain.linearRampToValueAtTime(0,t0+dur);
+  out.connect(c.destination);
+  const osc=c.createOscillator();osc.type='sine';osc.frequency.value=f0;
+  const lfo=c.createOscillator();lfo.frequency.value=34;
+  const depth=c.createGain();depth.gain.value=f0*.05;
+  lfo.connect(depth);depth.connect(osc.frequency);
+  osc.connect(out);
+  const len=Math.floor(c.sampleRate*dur),buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+  const n=c.createBufferSource();n.buffer=buf;
+  const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=f0;bp.Q.value=9;
+  const ng=c.createGain();ng.gain.value=.5;
+  n.connect(bp);bp.connect(ng);ng.connect(out);
+  [osc,lfo,n].forEach(x=>{x.start(t0);x.stop(t0+dur+.05)});
+}
+function playBuiltin(id){
+  const c=ctx();if(!c)return;const t=c.currentTime+.02;
+  if(id==='w1')whistleBlast(c,t,.55,2850);
+  else if(id==='w2'){whistleBlast(c,t,.22,3300);whistleBlast(c,t+.32,.75,3300)}
+  else if(id==='w3'){whistleBlast(c,t,.35,2900);whistleBlast(c,t+.5,.35,2900);whistleBlast(c,t+1,.9,2900)}
+  else if(id==='horn'){
+    const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.35,t+.05);g.gain.setValueAtTime(.35,t+1.1);g.gain.linearRampToValueAtTime(0,t+1.4);
+    const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1400;
+    lp.connect(g);g.connect(c.destination);
+    [220,224,330].forEach(f=>{const o=c.createOscillator();o.type='sawtooth';o.frequency.value=f;o.connect(lp);o.start(t);o.stop(t+1.5)});
+  }
+}
+const decoded=new Map();
+let customSounds=[];
+async function playCustom(id){
+  const c=ctx();if(!c)return;
+  const s=customSounds.find(x=>x.id===id);if(!s)return;
+  try{
+    let b=decoded.get(id);
+    if(!b){b=await c.decodeAudioData(s.buf.slice(0));decoded.set(id,b)}
+    const src=c.createBufferSource();src.buffer=b;
+    const g=c.createGain();g.gain.value=1;src.connect(g);g.connect(c.destination);src.start();
+  }catch(e){toast('Не удалось воспроизвести этот файл')}
+}
+const IDB={
+  open(){return new Promise((res,rej)=>{const r=indexedDB.open('dvor-sounds',1);r.onupgradeneeded=()=>r.result.createObjectStore('s',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})},
+  async all(){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction('s').objectStore('s').getAll();q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
+  async put(o){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction('s','readwrite');tx.objectStore('s').put(o);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})},
+  async del(id){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction('s','readwrite');tx.objectStore('s').delete(id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}
+};
+
+/* ---------- state ---------- */
+let view={name:'home'},sheet=null,draft=null,confirmFn=null,toastT=null,wake=null,lpFlag=false;
+const cur=()=>S.games.find(g=>g.id===view.id);
+const teamOf=(g,id)=>g.teams.find(t=>t.id===id);
+
+function toast(msg,label,fn){
+  const el=$('#toast');clearTimeout(toastT);
+  el.innerHTML='<span></span>'+(label?'<button data-act="toastact">'+esc(label)+'</button>':'');
+  el.firstChild.textContent=msg;el._fn=fn||null;el.classList.add('on');
+  toastT=setTimeout(()=>el.classList.remove('on'),label?7000:2600);
+}
+function applyTheme(){
+  const t=S.settings.theme,r=document.documentElement;
+  if(t==='light'||t==='dark')r.setAttribute('data-theme',t);else r.removeAttribute('data-theme');
+}
+async function keepAwake(on){
+  try{
+    if(on&&navigator.wakeLock&&!wake){wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null})}
+    else if(!on&&wake){await wake.release();wake=null}
+  }catch(e){}
+}
+
+/* ---------- views ---------- */
+function rulesLine(g){return RULES[g.rule][0]}
+function homeView(){
+  const list=S.games.length?`<ul class="glist">${S.games.map(g=>`<li><button class="grow" data-act="open" data-id="${g.id}"><span class="gname">${esc(g.name)}</span><span class="gmeta">${g.format}×${g.format}, ${g.teamCount} команды, ${g.minutes} мин</span><span class="gmeta">${esc(rulesLine(g))}</span><span class="gmeta">Сыграно матчей: ${g.matches.length}</span></button></li>`).join('')}</ul>`
+   :`<div class="empty"><h2>Игр пока нет</h2><p>Создайте игру: выберите формат и правила, впишите команды и игроков. Дальше приложение само ведёт очередь команд, счёт и таймер.</p></div>`;
+  return `<header class="top"><h1 class="brand">Двор</h1><button class="ghost" data-act="settings">Настройки</button></header><main class="wrap">${list}</main><div class="dock"><button class="primary" data-act="new">Добавить игру</button></div>`;
+}
+function colHead(k){
+  if(k==='g')return '⚽';
+  if(k==='y')return '<i class="card y"></i>';
+  if(k==='r')return '<i class="card r"></i>';
+  return {a:'А',s:'С',o:'О',d:'Д',u:'У',p:'П'}[k];
+}
+function standingsTable(g,all){
+  const rows=standings(g,all);
+  return `<div class="scroll"><table class="tbl"><thead><tr><th>#</th><th class="l">Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>+/-</th><th>РГ</th><th>ОЧК</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td class="l"><i class="dot" style="background:${r.t.color}"></i>${esc(r.t.name)}</td><td>${r.i}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf}-${r.ga}</td><td>${r.gf-r.ga>0?'+':''}${r.gf-r.ga}</td><td><b>${r.pts}</b></td></tr>`).join('')}</tbody></table></div>`;
+}
+function playersTable(g,all,editable){
+  const P=playerStats(g,all);
+  if(!P.length)return '<p class="hint">Игроков пока нет. Добавьте их через «Редактировать игру».</p>';
+  const cols=STATS.filter(([k])=>k==='g'||k==='a'||S.settings.cols[k]);
+  return `<div class="scroll"><table class="tbl pt"><thead><tr><th>#</th><th class="l">Игрок</th>${cols.map(c=>`<th>${colHead(c[0])}</th>`).join('')}</tr></thead><tbody>${P.map((p,i)=>`<tr${editable?` data-act="player" data-pid="${p.id}"`:''}><td>${esc(p.num||i+1)}</td><td class="l"><i class="dot" style="background:${p.team.color}"></i><span class="pn">${esc(p.name)}</span></td>${cols.map(c=>`<td class="${p.st[c[0]]?'nz':'z'}">${p.st[c[0]]}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function gameView(g){
+  const [a,b]=g.onField,A=teamOf(g,a),B=teamOf(g,b),L=g.live;
+  const side=(t,i)=>`<div class="side" style="--tc:${t.color};--ti:${ink(t.color)}" data-act="goal" data-team="${t.id}"><button class="tname" data-act="pickteam" data-slot="${i}">${esc(t.name)}</button><div class="score">${scoreOf(g,t.id)}</div><button class="minus" data-act="ungoal" data-team="${t.id}" aria-label="Убрать гол">−</button><div class="streak">игр подряд: ${g.streak[t.id]||0}</div></div>`;
+  const over=L.started&&!L.running&&L.remaining===0;
+  const custom=customSounds.map(s=>`<button class="chip" data-act="snd" data-id="${s.id}" data-custom="1">${esc(s.name)}</button>`).join('');
+  return `<header class="top"><button class="ghost" data-act="home">Назад</button><h1>${esc(g.name)}</h1><span></span></header>
+<main class="wrap">
+ <p class="hint" style="margin-top:0">${g.format}×${g.format}, ${esc(rulesLine(g))}</p>
+ <section class="board">
+  <div class="sides">${side(A,0)}${side(B,1)}</div>
+  <button class="swap" data-act="swap" aria-label="Поменять команды местами">⇄</button>
+ </section>
+ <div class="board-note"><span>Нажмите на половину табло, чтобы записать гол</span><span>Матчей: ${g.matches.filter(m=>m.session===g.session).length}</span></div>
+ <div class="clock"><button class="play" data-act="toggle" aria-label="${L.running?'Пауза':'Запустить таймер'}">${L.running?'❚❚':'▶'}</button><div class="time${over?' over':''}" id="time">${fmt(L.remaining)}</div></div>
+ <button class="primary" data-act="${L.started?'finish':'go'}">${L.started?'Завершить матч':'Начать матч'}</button>
+ ${L.started?'<button class="textbtn" data-act="resetlive">Сбросить этот матч</button>':''}
+ <div class="chips">
+  <button class="chip" data-act="snd" data-id="w1" data-b="1">Свисток 1</button>
+  <button class="chip" data-act="snd" data-id="w2" data-b="1">Свисток 2</button>
+  <button class="chip" data-act="snd" data-id="horn" data-b="1">Гудок</button>
+  ${custom}
+  <button class="chip add" data-act="addsound">+ Свой звук</button>
+ </div>
+ ${customSounds.length?'<p class="hint">Свой звук удаляется долгим нажатием.</p>':''}
+ <h2 class="sec">Таблица команд</h2>${standingsTable(g,false)}
+ <h2 class="sec">Игроки (нажмите на строку, чтобы отметить момент)</h2>${playersTable(g,false,true)}
+ <button class="textbtn" data-act="cols">Настроить столбцы</button>
+ <nav class="menu">
+  <button data-act="best">Лучшие игроки</button>
+  <button data-act="history">История игр</button>
+  <button data-act="edit">Редактировать игру</button>
+  <button data-act="resetsession">Начать новый вечер (сбросить результаты)</button>
+  <button data-act="info">Инфо</button>
+  <button data-act="all">Результаты всех игр</button>
+  <button class="danger" data-act="delgame">Удалить игру</button>
+ </nav>
+</main>`;
+}
+function ensureTeams(d){
+  while(d.teams.length<d.teamCount)d.teams.push({id:uid(),name:'',color:DEF_COLORS[d.teams.length]||COLORS[d.teams.length][0],players:[]});
+  if(d.teams.length>d.teamCount)d.teams.length=d.teamCount;
+  d.teams.forEach(t=>{while(t.players.length<d.format)t.players.push({id:uid(),name:'',num:''})});
+  if(d.tab>=d.teams.length)d.tab=0;
+}
+function makeDraft(g){
+  const d=g?{id:g.id,name:g.name,minutes:g.minutes,format:g.format,teamCount:g.teamCount,rule:g.rule,tab:0,teams:JSON.parse(JSON.stringify(g.teams))}
+    :{id:null,name:'Своя игра',minutes:6,format:5,teamCount:3,rule:'inf',tab:0,teams:[]};
+  ensureTeams(d);return d;
+}
+function syncDraft(){
+  if(!draft||view.name!=='form')return;
+  const n=$('#f-name');if(!n)return;
+  draft.name=n.value;draft.minutes=$('#f-min').value;
+  const t=draft.teams[draft.tab];t.name=$('#t-name').value;
+  document.querySelectorAll('.pnum').forEach(el=>{t.players[+el.dataset.i].num=el.value});
+  document.querySelectorAll('.pname').forEach(el=>{t.players[+el.dataset.i].name=el.value});
+}
+function formView(){
+  const d=draft,t=d.teams[d.tab],g=d.id?S.games.find(x=>x.id===d.id):null,locked=g&&g.matches.length>0;
+  return `<header class="top"><button class="ghost" data-act="formback">Назад</button><h1>${d.id?'Редактировать игру':'Новая игра'}</h1><button class="ghost strong" data-act="formsave">Готово</button></header>
+<main class="wrap">
+ <label class="fld"><span>Название игры</span><input id="f-name" value="${esc(d.name)}" placeholder="Например, четверг во дворе" maxlength="40"></label>
+ <label class="fld"><span>Минут в матче</span><input id="f-min" inputmode="numeric" value="${esc(d.minutes)}" placeholder="6"></label>
+ <div class="grp"><h2>Формат</h2><div class="pills">${[4,5,6,7,8,9,10,11].map(n=>`<button class="pill" aria-pressed="${d.format===n}" data-act="fmt" data-v="${n}">${n}×${n}</button>`).join('')}</div></div>
+ <div class="grp"><h2>Количество команд</h2><div class="pills">${[2,3,4].map(n=>`<button class="pill" aria-pressed="${d.teamCount===n}" data-act="tc" data-v="${n}"${locked?' disabled':''}>${n}</button>`).join('')}</div>${locked?'<p class="hint">После первого матча число команд менять нельзя. Начните новую игру, если нужно другое.</p>':''}</div>
+ <div class="grp"><h2>Правила</h2><div class="radios">${Object.entries(RULES).map(([k,v])=>`<button class="radio" aria-pressed="${d.rule===k}" data-act="rule" data-v="${k}"><span class="rd"></span>${v[0]}</button>`).join('')}</div></div>
+ <div class="tabs" role="tablist">${d.teams.map((x,i)=>`<button role="tab" aria-selected="${i===d.tab}" data-act="tab" data-i="${i}">К-${i+1}</button>`).join('')}</div>
+ <div class="team-ed">
+  <div class="trow"><button class="swatch" style="background:${t.color}" data-act="pickcolor" aria-label="Цвет команды"></button><input id="t-name" value="${esc(t.name)}" placeholder="Название команды" maxlength="24"></div>
+  ${t.players.map((p,i)=>`<div class="prow"><input class="pnum" data-i="${i}" inputmode="numeric" placeholder="№" value="${esc(p.num)}" maxlength="3"><input class="pname" data-i="${i}" placeholder="Игрок ${i+1}" value="${esc(p.name)}" maxlength="24"><button class="x" data-act="delplayer" data-i="${i}" aria-label="Убрать игрока">×</button></div>`).join('')}
+  <button class="secondary" data-act="addplayer">Добавить игрока</button>
+ </div>
+</main>`;
+}
+
+/* ---------- sheets ---------- */
+function bestList(g,all){
+  const P=playerStats(g,all).map(p=>({...p,sc:pScore(p.st)})).filter(p=>p.sc>0).sort((x,y)=>y.sc-x.sc||y.st.g-x.st.g);
+  if(!P.length)return '<p class="hint">Пока никто не отмечен. Записывайте голы на табло и яркие моменты в таблице игроков.</p>';
+  const top=P[0];
+  return `<div class="best" style="--tc:${top.team.color};--ti:${ink(top.team.color)}"><small>Лучший игрок</small><b>${esc(top.name)}</b><small style="margin-top:6px">${top.sc} очк.: голов ${top.st.g}, ассистов ${top.st.a}</small></div><div class="list">${P.slice(1,10).map((p,i)=>`<div class="row"><span class="num">${i+2}</span><span class="grow1"><i class="dot" style="background:${p.team.color}"></i>${esc(p.name)}</span><b>${p.sc}</b></div>`).join('')}</div><p class="hint">Очки: гол 3, ассист 2, яркий момент 1, жёлтая −1, красная −3.</p>`;
+}
+function sheetView(){
+  const g=view.name==='game'?cur():null;let h='';
+  const sh=sheet;
+  if(sh.type==='confirm'){
+    h=`<h2>${esc(sh.text)}</h2><button class="primary" style="${sh.danger?'background:var(--danger);color:#fff':''}" data-act="confirmok">${esc(sh.ok)}</button><button class="secondary" data-act="closesheet">Отмена</button>`;
+  }else if(sh.type==='scorer'||sh.type==='assist'){
+    const t=teamOf(g,sh.team),ps=t.players.filter(p=>p.id!==sh.scorer);
+    h=`<h2>${sh.type==='scorer'?'Кто забил?':'Кто отдал пас?'}</h2><p class="sub">${esc(t.name)}</p><div class="list">${ps.map(p=>`<button class="row" data-act="${sh.type==='scorer'?'pickscorer':'pickassist'}" data-pid="${p.id}"><span class="num">${esc(p.num||'')}</span><span class="grow1">${esc(p.name)}</span></button>`).join('')}<button class="row" data-act="${sh.type==='scorer'?'pickscorer':'pickassist'}" data-pid=""><span class="grow1" style="color:var(--muted)">${sh.type==='scorer'?'Без автора':'Без ассиста'}</span></button></div>`;
+  }else if(sh.type==='player'){
+    const P=playerStats(g,false).find(p=>p.id===sh.pid);
+    const live=g.live.stats[sh.pid]||emptyStat();
+    h=`<h2><i class="dot" style="background:${P.team.color}"></i>${esc(P.name)}</h2><p class="sub">Отметки записываются в текущий матч</p><div class="list">${STATS.filter(s=>s[0]!=='g').map(([k,n])=>`<div class="row"><span class="grow1">${n}</span><span class="stepper"><button data-act="pstat" data-k="${k}" data-d="-1" aria-label="Минус">−</button><b>${live[k]||0}</b><button data-act="pstat" data-k="${k}" data-d="1" aria-label="Плюс">+</button></span></div>`).join('')}</div><p class="hint">Голы записываются нажатием на табло. В этом матче: ${live.g||0}.</p><button class="primary" data-act="closesheet">Готово</button>`;
+  }else if(sh.type==='team'){
+    const other=g.onField[1-sh.slot];
+    h=`<h2>Какая команда играет?</h2><div class="list">${g.teams.filter(t=>t.id!==other).map(t=>`<button class="row" data-act="setteam" data-id="${t.id}"><span class="grow1"><i class="dot" style="background:${t.color}"></i>${esc(t.name)}</span></button>`).join('')}</div>`;
+  }else if(sh.type==='cols'){
+    h=`<h2>Столбцы статистики</h2><div class="list">${STATS.filter(s=>s[0]!=='g'&&s[0]!=='a').map(([k,n])=>`<button class="toggle" data-act="col" data-k="${k}" aria-pressed="${!!S.settings.cols[k]}"><span>${n}</span><span class="sw"></span></button>`).join('')}</div><button class="primary" style="margin-top:14px" data-act="closesheet">Готово</button>`;
+  }else if(sh.type==='best'){
+    h=`<h2>Лучшие игроки вечера</h2>${bestList(g,false)}`;
+  }else if(sh.type==='history'){
+    const ms=[...g.matches].reverse();
+    h=`<h2>История игр</h2>`+(ms.length?`<div class="list">${ms.map((m,i)=>{const A=teamOf(g,m.a),B=teamOf(g,m.b);if(!A||!B)return '';const idx=g.matches.length-i;return `<div class="match"><span class="grow1"><i class="dot" style="background:${A.color}"></i>${esc(A.name)}</span><b>${m.sa} : ${m.sb}</b><span class="grow1 r">${esc(B.name)}<i class="dot" style="background:${B.color};margin:0 0 0 8px"></i></span></div>`}).join('')}</div>`:'<p class="hint">Завершённых матчей пока нет.</p>');
+  }else if(sh.type==='all'){
+    h=`<h2>Результаты всех игр</h2>${standingsTable(g,true)}<h2 class="sec">Игроки</h2>${playersTable(g,true,false)}<h2 class="sec">Лучшие игроки</h2>${bestList(g,true)}<button class="secondary" style="color:var(--danger)" data-act="resetall">Сбросить результаты всех игр</button>`;
+  }else if(sh.type==='info'){
+    h=`<h2>Как это работает</h2><dl class="legend"><div><dt>⇄</dt><dd>Поменять команды местами</dd></div><div><dt>▶ ❚❚</dt><dd>Запустить и остановить таймер</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><dl class="legend"><div><dt>И</dt><dd>Игр</dd></div><div><dt>В</dt><dd>Выигрыши</dd></div><div><dt>Н</dt><dd>Ничьи</dd></div><div><dt>П</dt><dd>Поражения</dd></div><div><dt>+/-</dt><dd>Забитые и пропущенные голы</dd></div><div><dt>РГ</dt><dd>Разница голов</dd></div><div><dt>ОЧК</dt><dd>Очки: победа 3, ничья 1</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><dl class="legend"><div><dt>⚽</dt><dd>Гол</dd></div><div><dt>А</dt><dd>Ассист</dd></div><div><dt>С</dt><dd>Сейв</dd></div><div><dt>О</dt><dd>Отбор мяча</dd></div><div><dt>Д</dt><dd>Дриблинг</dd></div><div><dt>У</dt><dd>Удар</dd></div><div><dt>П</dt><dd>Пас</dd></div><div><dt><i class="card y"></i></dt><dd>Жёлтая карточка</dd></div><div><dt><i class="card r"></i></dt><dd>Красная карточка</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><p class="hint">При ничьей уходит команда, которая играет дольше. Если серии равны, уходит команда слева. «Игр подряд» показывает, сколько матчей команда провела на поле подряд.</p>`;
+  }else if(sh.type==='color'){
+    const cur_=draft.teams[draft.tab].color;
+    h=`<h2>Цвет команды</h2><div class="colors">${COLORS.map(([c,n])=>`<button style="background:${c}" aria-label="${n}" aria-pressed="${c===cur_}" data-act="setcolor" data-c="${c}"></button>`).join('')}</div>`;
+  }else if(sh.type==='settings'){
+    const t=S.settings.theme;
+    h=`<h2>Настройки</h2><p class="sub">Оформление</p><div class="seg">${[['auto','Как в системе'],['light','Светлое'],['dark','Тёмное']].map(([k,n])=>`<button aria-pressed="${t===k}" data-act="theme" data-v="${k}">${n}</button>`).join('')}</div><p class="hint">Игры и результаты хранятся только на этом устройстве, без аккаунта.</p><button class="secondary" style="color:var(--danger)" data-act="wipe">Удалить все игры</button>`;
+  }
+  return `<div class="backdrop" data-act="closesheet"><div class="panel" role="dialog" aria-modal="true">${h}</div></div>`;
+}
+
+/* ---------- render ---------- */
+function render(){
+  let html='';
+  if(view.name==='home')html=homeView();
+  else if(view.name==='game'){const g=cur();if(!g){view={name:'home'};return render()}html=gameView(g)}
+  else html=formView();
+  $('#app').innerHTML=html+(sheet?sheetView():'');
+  applyTheme();
+}
+const openSheet=o=>{sheet=o;render()};
+const closeSheet=()=>{sheet=null;render()};
+function ask(text,ok,fn,danger){confirmFn=fn;openSheet({type:'confirm',text,ok,danger})}
+function nowRemaining(g){return Math.max(0,Math.ceil((g.live.endAt-Date.now())/1000))}
+function startTimer(g){g.live.running=true;g.live.started=true;g.live.endAt=Date.now()+g.live.remaining*1000}
+
+function saveForm(){
+  syncDraft();const d=draft;
+  const minutes=Math.min(90,Math.max(1,parseInt(d.minutes,10)||6));
+  const name=(d.name||'').trim()||'Своя игра';
+  const teams=d.teams.map((t,i)=>({id:t.id,name:(t.name||'').trim()||('Команда '+(i+1)),color:t.color,players:t.players.filter(p=>(p.name||'').trim()||String(p.num||'').trim()).map(p=>{const num=String(p.num||'').trim(),nm=(p.name||'').trim();return {id:p.id,name:nm||('№'+num),num}})}));
+  let g;
+  if(d.id){
+    g=S.games.find(x=>x.id===d.id);
+    const changed=g.teamCount!==d.teamCount;
+    Object.assign(g,{name,minutes,format:d.format,rule:d.rule,teamCount:d.teamCount,teams});
+    if(changed)resetRotation(g);
+    if(!g.live.started&&!g.live.running)g.live.remaining=minutes*60;
+  }else{
+    g={id:uid(),name,minutes,format:d.format,teamCount:d.teamCount,rule:d.rule,teams,onField:[],queue:[],streak:{},session:1,matches:[],live:null,undo:null};
+    resetRotation(g);g.live=freshLive(g);S.games.push(g);
+  }
+  save();view={name:'game',id:g.id};draft=null;sheet=null;render();window.scrollTo(0,0);
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  if(lpFlag){lpFlag=false;e.preventDefault();return}
+  const t=e.target.closest('[data-act]');if(!t)return;
+  const act=t.dataset.act,D=t.dataset;
+  if(act==='closesheet'&&e.target!==t)return;
+  const g=view.name==='game'?cur():null;
+  switch(act){
+    case 'toastact':{const el=$('#toast');el.classList.remove('on');if(el._fn)el._fn();break}
+    case 'settings':openSheet({type:'settings'});break;
+    case 'theme':S.settings.theme=D.v;save();render();break;
+    case 'wipe':ask('Удалить все игры на этом устройстве?','Удалить',()=>{S.games=[];save();sheet=null;render()},true);break;
+    case 'new':draft=makeDraft(null);view={name:'form'};render();window.scrollTo(0,0);break;
+    case 'open':view={name:'game',id:D.id};render();window.scrollTo(0,0);break;
+    case 'home':keepAwake(false);view={name:'home'};sheet=null;render();window.scrollTo(0,0);break;
+    case 'closesheet':closeSheet();break;
+    case 'confirmok':{const f=confirmFn;confirmFn=null;sheet=null;if(f)f();else render();break}
+    /* form */
+    case 'formback':{const eid=view.editId;draft=null;view=(eid&&S.games.find(x=>x.id===eid))?{name:'game',id:eid}:{name:'home'};render();break}
+    case 'formsave':saveForm();break;
+    case 'fmt':syncDraft();draft.format=+D.v;ensureTeams(draft);render();break;
+    case 'tc':syncDraft();draft.teamCount=+D.v;ensureTeams(draft);render();break;
+    case 'rule':syncDraft();draft.rule=D.v;render();break;
+    case 'tab':syncDraft();draft.tab=+D.i;render();break;
+    case 'pickcolor':syncDraft();openSheet({type:'color'});break;
+    case 'setcolor':draft.teams[draft.tab].color=D.c;closeSheet();break;
+    case 'addplayer':syncDraft();draft.teams[draft.tab].players.push({id:uid(),name:'',num:''});render();break;
+    case 'delplayer':syncDraft();draft.teams[draft.tab].players.splice(+D.i,1);render();break;
+    /* game */
+    case 'goal':{
+      const tid=D.team,team=teamOf(g,tid);
+      if(!team.players.length){addGoal(g,tid);save();render();break}
+      openSheet({type:'scorer',team:tid});break;
+    }
+    case 'pickscorer':{
+      const tid=sheet.team,pid=D.pid||null,team=teamOf(g,tid);
+      if(!pid||team.players.filter(p=>p.id!==pid).length===0){addGoal(g,tid,pid);save();sheet=null;render()}
+      else{sheet={type:'assist',team:tid,scorer:pid};render()}
+      break;
+    }
+    case 'pickassist':addGoal(g,sheet.team,sheet.scorer,D.pid||null);save();sheet=null;render();break;
+    case 'ungoal':undoGoal(g,D.team);save();render();break;
+    case 'swap':g.onField=[g.onField[1],g.onField[0]];save();render();break;
+    case 'pickteam':
+      if(g.live.started||g.live.goals.length){toast('Команды нельзя менять во время матча');break}
+      openSheet({type:'team',slot:+D.slot});break;
+    case 'setteam':{
+      const slot=sheet.slot,old=g.onField[slot],nw=D.id,qi=g.queue.indexOf(nw);
+      if(qi>=0)g.queue[qi]=old;
+      g.onField[slot]=nw;save();sheet=null;render();break;
+    }
+    case 'toggle':{
+      const L=g.live;
+      if(L.running){L.remaining=nowRemaining(g);L.running=false}
+      else if(L.remaining>0){startTimer(g);keepAwake(true)}
+      save();render();break;
+    }
+    case 'go':
+      startTimer(g);playBuiltin('w1');keepAwake(true);save();render();break;
+    case 'finish':{
+      const go=()=>{finishMatch(g);keepAwake(false);save();sheet=null;render();
+        toast('Матч записан','Отменить',()=>{if(g.undo){const s=JSON.parse(g.undo);Object.keys(g).forEach(k=>delete g[k]);Object.assign(g,s,{undo:null});save();render()}})};
+      go();break;
+    }
+    case 'resetlive':ask('Сбросить этот матч? Счёт и отметки игроков обнулятся.','Сбросить',()=>{g.live=freshLive(g);keepAwake(false);save();sheet=null;render()},true);break;
+    case 'snd':
+      if(D.b)playBuiltin(D.id);else playCustom(D.id);break;
+    case 'addsound':$('#snd-file').click();break;
+    case 'player':openSheet({type:'player',pid:D.pid});break;
+    case 'pstat':{
+      const pid=sheet.pid,st=g.live.stats[pid]||(g.live.stats[pid]=emptyStat());
+      st[D.k]=Math.max(0,(st[D.k]||0)+(+D.d));save();render();break;
+    }
+    case 'cols':openSheet({type:'cols'});break;
+    case 'col':S.settings.cols[D.k]=S.settings.cols[D.k]?0:1;save();render();break;
+    case 'best':openSheet({type:'best'});break;
+    case 'history':openSheet({type:'history'});break;
+    case 'all':openSheet({type:'all'});break;
+    case 'info':openSheet({type:'info'});break;
+    case 'edit':draft=makeDraft(g);view={name:'form',id:g.id,editId:g.id};render();window.scrollTo(0,0);break;
+    case 'resetsession':ask('Начать новый вечер? Таблицы обнулятся, общие результаты сохранятся.','Начать заново',()=>{g.session++;g.streak={};resetRotation(g);g.live=freshLive(g);keepAwake(false);save();sheet=null;render()},false);break;
+    case 'resetall':ask('Сбросить результаты всех игр? Это удалит всю историю матчей.','Сбросить',()=>{g.matches=[];g.session=1;g.streak={};resetRotation(g);g.live=freshLive(g);keepAwake(false);save();sheet=null;render()},true);break;
+    case 'delgame':ask('Удалить игру «'+g.name+'» вместе с результатами?','Удалить',()=>{S.games=S.games.filter(x=>x.id!==g.id);save();keepAwake(false);sheet=null;view={name:'home'};render();window.scrollTo(0,0)},true);break;
+  }
+});
+/* long press deletes custom sound */
+let lpT=null;
+document.addEventListener('pointerdown',e=>{
+  const t=e.target.closest('[data-custom]');if(!t)return;
+  lpT=setTimeout(()=>{
+    lpFlag=true;const id=t.dataset.id,s=customSounds.find(x=>x.id===id);
+    if(s)ask('Удалить звук «'+s.name+'»?','Удалить',async()=>{
+      try{await IDB.del(id)}catch(e){}
+      customSounds=customSounds.filter(x=>x.id!==id);decoded.delete(id);sheet=null;render();
+    },true);
+  },550);
+});
+['pointerup','pointercancel','pointerleave','scroll'].forEach(ev=>document.addEventListener(ev,()=>{clearTimeout(lpT)},true));
+document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-custom]'))e.preventDefault()});
+$('#snd-file').addEventListener('change',async e=>{
+  const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+  if(f.size>4*1024*1024){toast('Файл слишком большой. Нужен звук до 4 МБ');return}
+  try{
+    const buf=await f.arrayBuffer();
+    const c=ctx();if(c)await c.decodeAudioData(buf.slice(0));
+    const s={id:uid(),name:f.name.replace(/\.[^.]+$/,'').slice(0,22)||'Звук',buf};
+    await IDB.put(s);customSounds.push(s);render();toast('Звук «'+s.name+'» добавлен');
+  }catch(err){toast('Не удалось добавить этот файл. Попробуйте mp3 или m4a')}
+});
+/* timer */
+setInterval(()=>{
+  if(view.name!=='game')return;const g=cur();if(!g||!g.live.running)return;
+  const rem=nowRemaining(g);g.live.remaining=rem;
+  const el=$('#time');if(el)el.textContent=fmt(rem);
+  if(rem<=0){g.live.running=false;save();playBuiltin('w3');if(navigator.vibrate)navigator.vibrate([200,100,200]);render();toast('Время вышло')}
+},250);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&view.name==='game'){const g=cur();if(g&&g.live.running){g.live.remaining=nowRemaining(g);render()}}});
+
+
+/* offline cache */
+if('serviceWorker' in navigator && location.protocol==='https:'){
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
+}
+
+/* init */
+load();applyTheme();render();
+IDB.all().then(a=>{customSounds=a||[];if(view.name==='game')render()}).catch(()=>{});
+</script>
+</body>
+</html>
