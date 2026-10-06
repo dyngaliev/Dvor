@@ -58,20 +58,29 @@ h1,h2{margin:0}
 .gname{display:block;font-size:20px;font-weight:700;margin-bottom:4px}
 .gmeta{display:block;color:var(--muted);font-size:14px}
 /* scoreboard */
-.board{position:relative;border-radius:24px;overflow:hidden;margin-top:6px}
-.sides{display:grid;grid-template-columns:1fr 1fr}
-.side{background:var(--tc);color:var(--ti);padding:16px 8px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;min-height:250px;cursor:pointer;user-select:none;-webkit-user-select:none}
-.side:active{filter:brightness(.94)}
-.tname{font-weight:700;font-size:17px;padding:6px 10px;border-radius:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board{position:relative;border-radius:26px;overflow:hidden;margin-top:6px;padding:14px 6px 12px;color:#fff;background:repeating-linear-gradient(90deg,#1E4D2B 0 40px,#235A33 40px 80px)}
+.board::before{content:"";position:absolute;left:50%;top:50%;width:190px;height:190px;margin:-95px 0 0 -95px;border:2px solid rgba(255,255,255,.16);border-radius:50%}
+.board::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px solid rgba(255,255,255,.16)}
+.live{position:relative;z-index:1;display:block;width:max-content;margin:0 auto;padding:6px 14px;border-radius:99px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.22);font-size:13px;font-weight:600;letter-spacing:.06em}
+.live.on{background:rgba(180,60,50,.4);border-color:#C0584E}
+.live.on::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:#E5483B;margin-right:8px}
+.sides{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr}
+.side{color:#fff;padding:8px 6px 6px;text-align:center;display:flex;flex-direction:column;align-items:center;min-height:240px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.shirt{width:56px;height:48px;margin-top:6px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.35))}
+.side:active{filter:brightness(1.12)}
+.tname{font-weight:700;font-size:17px;padding:6px 10px;margin-top:8px;border-radius:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(0,0,0,.25);color:#fff}
 .score{font-family:'Unbounded',system-ui,sans-serif;font-weight:800;font-size:clamp(64px,23vw,108px);line-height:1;margin:auto 0;padding:12px 0}
-.minus{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.18);color:inherit;font-size:24px;line-height:1;margin-bottom:8px}
-.streak{font-size:13px;opacity:.85}
-.swap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:var(--bg);color:var(--text);font-size:22px;box-shadow:0 2px 10px rgba(0,0,0,.25);z-index:2}
+.minus{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:24px;line-height:1;margin-bottom:8px}
+.streak{font-size:13px;opacity:.75}
+.swap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(16,38,24,.88);color:#fff;border:1px solid rgba(255,255,255,.25);font-size:22px;box-shadow:0 2px 10px rgba(0,0,0,.35);z-index:2}
 .board-note{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:10px 4px 0}
-.clock{display:flex;align-items:center;gap:16px;margin:18px 0 12px}
-.play{flex:none;width:64px;height:64px;border-radius:50%;background:var(--surface2);font-size:24px}
-.time{font-family:'Unbounded',system-ui,sans-serif;font-weight:800;font-size:clamp(44px,14vw,60px);letter-spacing:-1px;font-variant-numeric:tabular-nums}
-.time.over{color:var(--danger)}
+.clockcard{background:linear-gradient(#17331F,#10261A);color:#fff;border-radius:26px;padding:16px;margin-top:14px}
+.clockcard .textbtn{color:rgba(255,255,255,.6);margin-bottom:0}
+.clock{display:flex;align-items:center;gap:16px;margin:0 0 14px}
+.primary.fin{background:linear-gradient(90deg,#D9746A,#B0463A);color:#fff}
+.play{flex:none;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:24px}
+.time{font-family:'Unbounded',system-ui,sans-serif;font-weight:800;font-size:clamp(44px,14vw,60px);letter-spacing:-1px;font-variant-numeric:tabular-nums;color:#fff}
+.time.over{color:#FF8A78}
 .textbtn{display:block;margin:12px auto 0;color:var(--muted);padding:8px;font-size:14px}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:22px -16px 0;padding:2px 16px}
 .chips::-webkit-scrollbar{display:none}
@@ -88,7 +97,7 @@ h2.sec{font-size:15px;font-weight:600;color:var(--muted);margin:28px 0 8px}
 .tbl td.nz{font-weight:700}
 .tbl tr[data-act]{cursor:pointer}
 .tbl tr[data-act]:active{background:var(--surface2)}
-.pt{min-width:340px}
+.pt{min-width:420px}
 .pt .pn{display:inline-block;max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
 .dot{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:8px;vertical-align:middle;flex:none}
 .card{display:inline-block;width:11px;height:15px;border-radius:2px;vertical-align:middle}
@@ -147,9 +156,13 @@ input[type=text],input:not([type]),input[inputmode]{width:100%;padding:14px;bord
 .sw::after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:var(--muted);transition:transform .15s}
 .toggle[aria-pressed="true"] .sw{background:var(--accent)}
 .toggle[aria-pressed="true"] .sw::after{transform:translateX(20px);background:var(--accent-ink)}
-.best{border-radius:20px;padding:18px;background:var(--tc,var(--accent));color:var(--ti,var(--accent-ink));margin-bottom:12px}
-.best small{display:block;font-weight:600;opacity:.8}
-.best b{display:block;font-family:'Unbounded',system-ui,sans-serif;font-size:26px;margin-top:4px}
+.best{border-radius:22px;padding:18px;background:linear-gradient(135deg,#1F7A2E,#14582A);color:#fff;margin-bottom:12px}
+.best small{display:block;font-weight:700;color:#FFD75A}
+.best b{display:block;font-family:'Unbounded',system-ui,sans-serif;font-size:24px;margin:8px 0}
+.best .chip2{display:inline-block;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.18);font-size:14px;font-weight:500}
+.bp{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 2px;border-top:1px solid var(--line)}
+.bp small{display:block;color:var(--muted);font-size:13px}
+.bp b{white-space:nowrap}
 .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;padding:13px 2px;border-top:1px solid var(--line)}
 .match .r{text-align:right}
 .match b{font-family:'Unbounded',system-ui,sans-serif;font-size:18px}
@@ -162,6 +175,16 @@ input[type=text],input:not([type]),input[inputmode]{width:100%;padding:14px;bord
 .toast button{color:var(--accent);font-weight:700;padding:4px 6px}
 :root[data-theme="light"] .toast button{color:#8A6A00}
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .toast button{color:#8A6A00}}
+.ico{display:inline-block;min-width:30px}
+.hb{display:flex;flex-direction:column;align-items:center;width:100%;min-width:30px;padding:2px 0;color:inherit;font-size:15px}
+.hb i{font-style:normal;font-size:9px;height:11px;color:var(--text)}
+.tl{display:flex;align-items:center;gap:10px;padding:12px 2px;border-top:1px solid var(--line)}
+.tl .min{min-width:34px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tl .clk{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+button.match{width:100%;text-align:left}
+.backdrop.mid{align-items:center;padding:0 22px}
+.backdrop.mid .panel{max-width:420px;border-radius:28px;padding:24px 20px 20px;max-height:none;animation:fade .15s ease-out}
+.panel .primary.dng{background:var(--surface2);color:var(--danger)}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -206,7 +229,7 @@ function rotate(onField,queue,streak,rule,sa,sb){
   for(let i=0;i<2;i++){ if(leave.includes(nf[i])) nf[i]=q.shift(); }
   return {onField:nf,queue:q,streak:st};
 }
-function freshLive(g){return {goals:[],stats:{},running:false,started:false,remaining:g.minutes*60,endAt:0}}
+function freshLive(g){return {goals:[],events:[],stats:{},running:false,started:false,startedAt:0,remaining:g.minutes*60,endAt:0}}
 function resetRotation(g){g.onField=[g.teams[0].id,g.teams[1].id];g.queue=g.teams.slice(2).map(t=>t.id);g.streak={}}
 function scoreOf(g,tid){return g.live.goals.filter(x=>x.team===tid).length}
 function standings(g,all){
@@ -231,10 +254,21 @@ function playerStats(g,all){
   return out;
 }
 const pScore=st=>Object.keys(WEIGHT).reduce((s,k)=>s+WEIGHT[k]*(st[k]||0),0);
-function addGoal(g,team,scorer,assist){
-  g.live.goals.push({team,scorer:scorer||null,assist:assist||null});
+function addGoal(g,team,scorer,assist,s){
+  g.live.goals.push({team,scorer:scorer||null,assist:assist||null,s:s||0,t:Date.now()});
   if(scorer){(g.live.stats[scorer]=g.live.stats[scorer]||emptyStat()).g++}
   if(assist){(g.live.stats[assist]=g.live.stats[assist]||emptyStat()).a++}
+}
+function addMoment(g,pid,k,s){
+  const L=g.live;(L.events=L.events||[]).push({k,pid,s:s||0,t:Date.now()});
+  const st=L.stats[pid]||(L.stats[pid]=emptyStat());st[k]=(st[k]||0)+1;
+}
+function removeMoment(g,pid,k){
+  const L=g.live,st=L.stats[pid];if(!st||!(st[k]>0))return false;
+  st[k]--;
+  const ev=L.events||[];
+  for(let i=ev.length-1;i>=0;i--){if(ev[i].pid===pid&&ev[i].k===k){ev.splice(i,1);break}}
+  return true;
 }
 function undoGoal(g,team){
   for(let i=g.live.goals.length-1;i>=0;i--){
@@ -250,13 +284,19 @@ function undoGoal(g,team){
 function finishMatch(g){
   const [a,b]=g.onField, sa=scoreOf(g,a), sb=scoreOf(g,b);
   const snap=JSON.stringify({...g,undo:null});
-  g.matches.push({id:uid(),session:g.session,a,b,sa,sb,stats:g.live.stats,goals:g.live.goals,ts:Date.now()});
+  g.matches.push({id:uid(),session:g.session,a,b,sa,sb,stats:g.live.stats,goals:g.live.goals,events:g.live.events||[],start:g.live.startedAt||0,ts:Date.now()});
   const r=rotate(g.onField,g.queue,g.streak,g.rule,sa,sb);
   g.onField=r.onField;g.queue=r.queue;g.streak=r.streak;
   g.live=freshLive(g);
   g.undo=snap;
 }
 /*LOGIC_END*/
+
+const EMO={g:'⚽',a:'👟',s:'🧤',o:'🛡️',d:'💨',u:'🎯',p:'🔁',y:'🟨',r:'🟥'};
+const SNAME=Object.fromEntries(STATS);
+let sortP=null;
+const tShort=ts=>new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+const dLong=ts=>new Date(ts).toLocaleString([],{dateStyle:'medium',timeStyle:'short'});
 
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -267,7 +307,7 @@ const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(
 
 /* ---------- storage ---------- */
 const KEY='dvor.v1';
-let S={games:[],settings:{theme:'auto',cols:{s:1,o:1,d:1,u:1,p:1,y:1,r:1}}};
+let S={games:[],settings:{theme:'auto',cols:{g:1,a:1,s:1,o:1,d:1,u:1,p:1,y:1,r:1}}};
 function load(){
   try{
     const raw=localStorage.getItem(KEY);
@@ -361,38 +401,37 @@ function homeView(){
    :`<div class="empty"><h2>Игр пока нет</h2><p>Создайте игру: выберите формат и правила, впишите команды и игроков. Дальше приложение само ведёт очередь команд, счёт и таймер.</p></div>`;
   return `<header class="top"><h1 class="brand">Двор</h1><button class="ghost" data-act="settings">Настройки</button></header><main class="wrap">${list}</main><div class="dock"><button class="primary" data-act="new">Добавить игру</button></div>`;
 }
-function colHead(k){
-  if(k==='g')return '⚽';
-  if(k==='y')return '<i class="card y"></i>';
-  if(k==='r')return '<i class="card r"></i>';
-  return {a:'А',s:'С',o:'О',d:'Д',u:'У',p:'П'}[k];
-}
+function colHead(k){return EMO[k]}
 function standingsTable(g,all){
   const rows=standings(g,all);
   return `<div class="scroll"><table class="tbl"><thead><tr><th>#</th><th class="l">Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>+/-</th><th>РГ</th><th>ОЧК</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td class="l"><i class="dot" style="background:${r.t.color}"></i>${esc(r.t.name)}</td><td>${r.i}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf}-${r.ga}</td><td>${r.gf-r.ga>0?'+':''}${r.gf-r.ga}</td><td><b>${r.pts}</b></td></tr>`).join('')}</tbody></table></div>`;
 }
 function playersTable(g,all,editable){
-  const P=playerStats(g,all);
+  let P=playerStats(g,all);
+  if(sortP)P=[...P].sort((x,y)=>sortP.d==='desc'?y.st[sortP.k]-x.st[sortP.k]:x.st[sortP.k]-y.st[sortP.k]);
   if(!P.length)return '<p class="hint">Игроков пока нет. Добавьте их через «Редактировать игру».</p>';
-  const cols=STATS.filter(([k])=>k==='g'||k==='a'||S.settings.cols[k]);
-  return `<div class="scroll"><table class="tbl pt"><thead><tr><th>#</th><th class="l">Игрок</th>${cols.map(c=>`<th>${colHead(c[0])}</th>`).join('')}</tr></thead><tbody>${P.map((p,i)=>`<tr${editable?` data-act="player" data-pid="${p.id}"`:''}><td>${esc(p.num||i+1)}</td><td class="l"><i class="dot" style="background:${p.team.color}"></i><span class="pn">${esc(p.name)}</span></td>${cols.map(c=>`<td class="${p.st[c[0]]?'nz':'z'}">${p.st[c[0]]}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  const cols=STATS.filter(([k])=>S.settings.cols[k]);
+  return `<div class="scroll"><table class="tbl pt"><thead><tr><th>#</th><th class="l">Игрок</th>${cols.map(c=>`<th><button class="hb" data-act="sortp" data-k="${c[0]}" aria-label="Сортировать: ${c[1]}">${colHead(c[0])}<i>${sortP&&sortP.k===c[0]?(sortP.d==='desc'?'▼':'▲'):''}</i></button></th>`).join('')}</tr></thead><tbody>${P.map((p,i)=>`<tr${editable?` data-act="player" data-pid="${p.id}"`:''}><td>${esc(p.num||i+1)}</td><td class="l"><i class="dot" style="background:${p.team.color}"></i><span class="pn">${esc(p.name)}</span></td>${cols.map(c=>`<td class="${p.st[c[0]]?'nz':'z'}">${p.st[c[0]]}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 function gameView(g){
   const [a,b]=g.onField,A=teamOf(g,a),B=teamOf(g,b),L=g.live;
-  const side=(t,i)=>`<div class="side" style="--tc:${t.color};--ti:${ink(t.color)}" data-act="goal" data-team="${t.id}"><button class="tname" data-act="pickteam" data-slot="${i}">${esc(t.name)}</button><div class="score">${scoreOf(g,t.id)}</div><button class="minus" data-act="ungoal" data-team="${t.id}" aria-label="Убрать гол">−</button><div class="streak">игр подряд: ${g.streak[t.id]||0}</div></div>`;
+  const shirt=c=>`<svg class="shirt" viewBox="0 0 64 56" aria-hidden="true"><path d="M20 4 4 14l6 14 8-4v28h28V24l8 4 6-14L44 4c-3 6-21 6-24 0z" fill="${c}" stroke="rgba(0,0,0,.28)" stroke-width="2" stroke-linejoin="round"/></svg>`;
+  const side=(t,i)=>`<div class="side" style="--tc:${t.color}" data-act="goal" data-team="${t.id}">${shirt(t.color)}<button class="tname" data-act="pickteam" data-slot="${i}">${esc(t.name)}</button><div class="score">${scoreOf(g,t.id)}</div><button class="minus" data-act="ungoal" data-team="${t.id}" aria-label="Убрать гол">−</button><div class="streak">игр подряд: ${g.streak[t.id]||0}</div></div>`;
   const over=L.started&&!L.running&&L.remaining===0;
+  const lv=L.running?'<span class="live on">LIVE</span>':`<span class="live">${over?'Время вышло':L.started?'Пауза':'Перед матчем'}</span>`;
   const custom=customSounds.map(s=>`<button class="chip" data-act="snd" data-id="${s.id}" data-custom="1">${esc(s.name)}</button>`).join('');
   return `<header class="top"><button class="ghost" data-act="home">Назад</button><h1>${esc(g.name)}</h1><span></span></header>
 <main class="wrap">
  <p class="hint" style="margin-top:0">${g.format}×${g.format}, ${esc(rulesLine(g))}</p>
- <section class="board">
+ <section class="board">${lv}
   <div class="sides">${side(A,0)}${side(B,1)}</div>
   <button class="swap" data-act="swap" aria-label="Поменять команды местами">⇄</button>
  </section>
- <div class="board-note"><span>Нажмите на половину табло, чтобы записать гол</span><span>Матчей: ${g.matches.filter(m=>m.session===g.session).length}</span></div>
- <div class="clock"><button class="play" data-act="toggle" aria-label="${L.running?'Пауза':'Запустить таймер'}">${L.running?'❚❚':'▶'}</button><div class="time${over?' over':''}" id="time">${fmt(L.remaining)}</div></div>
- <button class="primary" data-act="${L.started?'finish':'go'}">${L.started?'Завершить матч':'Начать матч'}</button>
+ <div class="board-note"><span>Нажмите на половину табло, чтобы записать событие</span><span>Матчей: ${g.matches.filter(m=>m.session===g.session).length}</span></div>
+ <section class="clockcard"><div class="clock"><button class="play" data-act="toggle" aria-label="${L.running?'Пауза':'Запустить таймер'}">${L.running?'❚❚':'▶'}</button><div class="time${over?' over':''}" id="time">${fmt(L.remaining)}</div></div>
+ <button class="primary${L.started?' fin':''}" data-act="${L.started?'finish':'go'}">${L.started?'Завершить матч 🏁':'Начать матч'}</button>
  ${L.started?'<button class="textbtn" data-act="resetlive">Сбросить этот матч</button>':''}
+ </section>
  <div class="chips">
   <button class="chip" data-act="snd" data-id="w1" data-b="1">Свисток 1</button>
   <button class="chip" data-act="snd" data-id="w2" data-b="1">Свисток 2</button>
@@ -403,7 +442,8 @@ function gameView(g){
  ${customSounds.length?'<p class="hint">Свой звук удаляется долгим нажатием.</p>':''}
  <h2 class="sec">Таблица команд</h2>${standingsTable(g,false)}
  <h2 class="sec">Игроки (нажмите на строку, чтобы отметить момент)</h2>${playersTable(g,false,true)}
- <button class="textbtn" data-act="cols">Настроить столбцы</button>
+ <p class="hint">Нажмите на значок в заголовке, чтобы отсортировать: первое нажатие от большего, второе от меньшего.</p>
+ <button class="textbtn" data-act="cols">⚙️ Настроить столбцы</button>
  <nav class="menu">
   <button data-act="best">Лучшие игроки</button>
   <button data-act="history">История игр</button>
@@ -454,37 +494,67 @@ function formView(){
 
 /* ---------- sheets ---------- */
 function bestList(g,all){
-  const P=playerStats(g,all).map(p=>({...p,sc:pScore(p.st)})).filter(p=>p.sc>0).sort((x,y)=>y.sc-x.sc||y.st.g-x.st.g);
-  if(!P.length)return '<p class="hint">Пока никто не отмечен. Записывайте голы на табло и яркие моменты в таблице игроков.</p>';
-  const top=P[0];
-  return `<div class="best" style="--tc:${top.team.color};--ti:${ink(top.team.color)}"><small>Лучший игрок</small><b>${esc(top.name)}</b><small style="margin-top:6px">${top.sc} очк.: голов ${top.st.g}, ассистов ${top.st.a}</small></div><div class="list">${P.slice(1,10).map((p,i)=>`<div class="row"><span class="num">${i+2}</span><span class="grow1"><i class="dot" style="background:${p.team.color}"></i>${esc(p.name)}</span><b>${p.sc}</b></div>`).join('')}</div><p class="hint">Очки: гол 3, ассист 2, яркий момент 1, жёлтая −1, красная −3.</p>`;
+  const A=playerStats(g,all);
+  if(!A.some(p=>Object.values(p.st).some(v=>v>0)))return '<p class="hint">Пока никто не отмечен. Записывайте события на табло и яркие моменты в таблице игроков.</p>';
+  const R=A.map(p=>({...p,sc:pScore(p.st)})).filter(p=>p.sc>0).sort((x,y)=>y.sc-x.sc||y.st.g-x.st.g);
+  let h='';
+  if(R.length){const top=R[0];h+=`<div class="best"><small>🏆 Лучший игрок 🔥</small><b><i class="dot" style="background:${top.team.color}"></i>${esc(top.name)}</b><span class="chip2">${top.sc} очк. · ${top.st.g} ⚽ · ${top.st.a} 👟</span></div>`}
+  const mx=(f)=>A.reduce((b,p)=>f(p)>f(b)?p:b,A[0]);
+  const cats=[['g','⚽','Лучший бомбардир','гол'],['a','👟','Лучший ассист','ассист'],['s','🧤','Лучший сейв','сейв'],['d','💨','Лучший дриблинг','дриблинг'],['p','🔁','Лучший пас','пас'],['o','🛡️','Лучший отбор','отбор'],['u','🎯','Лучший удар','удар']];
+  const row=(lab,p,val)=>`<div class="bp"><div><small>${lab}</small><i class="dot" style="background:${p.team.color}"></i>${esc(p.name)}</div><b>${val}</b></div>`;
+  cats.forEach(([k,e,l,w])=>{const p=mx(x=>x.st[k]);if(p&&p.st[k]>0)h+=row(`${e} ${l}`,p,`${p.st[k]} ${w}`)});
+  const rough=mx(x=>x.st.y+x.st.r*2);
+  if(rough&&rough.st.y+rough.st.r>0)h+=row('Самый грубый игрок 👎',rough,`${rough.st.r?rough.st.r+' 🟥 ':''}${rough.st.y?rough.st.y+' 🟨':''}`.trim());
+  if(R.length>1)h+=`<h2 class="sec">Рейтинг по очкам</h2><div class="list">${R.slice(1,10).map((p,i)=>`<div class="row"><span class="num">${i+2}</span><span class="grow1"><i class="dot" style="background:${p.team.color}"></i>${esc(p.name)}</span><b>${p.sc}</b></div>`).join('')}</div>`;
+  return h+'<p class="hint">Очки: гол 3, ассист 2, яркий момент 1, жёлтая −1, красная −3.</p>';
+}
+function matchDetail(g,id){
+  const m=g.matches.find(x=>x.id===id),A=m&&teamOf(g,m.a),B=m&&teamOf(g,m.b);
+  if(!A||!B)return '<p class="hint">Матч не найден.</p>';
+  const tp=pid=>g.teams.find(t=>t.players.some(p=>p.id===pid));
+  const nm=pid=>{const t=tp(pid);return t?t.players.find(p=>p.id===pid).name:'Игрок'};
+  const items=[];
+  (m.goals||[]).forEach(x=>items.push({t:x.t,s:x.s,color:(teamOf(g,x.team)||A).color,html:`<span class="ico">⚽</span>${x.scorer?esc(nm(x.scorer)):'Гол'}${x.assist?` <span style="color:var(--muted)">· 👟 ${esc(nm(x.assist))}</span>`:''}`}));
+  (m.events||[]).forEach(x=>items.push({t:x.t,s:x.s,color:(tp(x.pid)||A).color,html:`<span class="ico">${EMO[x.k]}</span>${esc(nm(x.pid))} <span style="color:var(--muted)">· ${SNAME[x.k]}</span>`}));
+  items.sort((a,b)=>(a.t||0)-(b.t||0));
+  const when=dLong(m.start||m.ts)+(m.start&&m.ts?' — '+tShort(m.ts):'');
+  return `<button class="textbtn" style="margin:0 0 8px;padding:0;text-align:left" data-act="history">‹ История игр</button><h2><i class="dot" style="background:${A.color}"></i>${esc(A.name)} ${m.sa} : ${m.sb} ${esc(B.name)}<i class="dot" style="background:${B.color};margin:0 0 0 8px"></i></h2><p class="sub">${when}</p>`+
+    (items.length?`<div>${items.map(it=>`<div class="tl"><span class="min">${it.s!==undefined?(Math.floor(it.s/60)+1)+"'":''}</span><span class="grow1"><i class="dot" style="background:${it.color}"></i>${it.html}</span><span class="clk">${it.t?tShort(it.t):''}</span></div>`).join('')}</div>`:'<p class="hint">Событий в этом матче не записано.</p>');
 }
 function sheetView(){
   const g=view.name==='game'?cur():null;let h='';
   const sh=sheet;
   if(sh.type==='confirm'){
-    h=`<h2>${esc(sh.text)}</h2><button class="primary" style="${sh.danger?'background:var(--danger);color:#fff':''}" data-act="confirmok">${esc(sh.ok)}</button><button class="secondary" data-act="closesheet">Отмена</button>`;
+    h=`<h2>${esc(sh.text)}</h2><button class="primary${sh.danger?' dng':''}" data-act="confirmok">${esc(sh.ok)}</button><button class="secondary" data-act="closesheet">Отмена</button>`;
   }else if(sh.type==='scorer'||sh.type==='assist'){
     const t=teamOf(g,sh.team),ps=t.players.filter(p=>p.id!==sh.scorer);
     h=`<h2>${sh.type==='scorer'?'Кто забил?':'Кто отдал пас?'}</h2><p class="sub">${esc(t.name)}</p><div class="list">${ps.map(p=>`<button class="row" data-act="${sh.type==='scorer'?'pickscorer':'pickassist'}" data-pid="${p.id}"><span class="num">${esc(p.num||'')}</span><span class="grow1">${esc(p.name)}</span></button>`).join('')}<button class="row" data-act="${sh.type==='scorer'?'pickscorer':'pickassist'}" data-pid=""><span class="grow1" style="color:var(--muted)">${sh.type==='scorer'?'Без автора':'Без ассиста'}</span></button></div>`;
   }else if(sh.type==='player'){
     const P=playerStats(g,false).find(p=>p.id===sh.pid);
     const live=g.live.stats[sh.pid]||emptyStat();
-    h=`<h2><i class="dot" style="background:${P.team.color}"></i>${esc(P.name)}</h2><p class="sub">Отметки записываются в текущий матч</p><div class="list">${STATS.filter(s=>s[0]!=='g').map(([k,n])=>`<div class="row"><span class="grow1">${n}</span><span class="stepper"><button data-act="pstat" data-k="${k}" data-d="-1" aria-label="Минус">−</button><b>${live[k]||0}</b><button data-act="pstat" data-k="${k}" data-d="1" aria-label="Плюс">+</button></span></div>`).join('')}</div><p class="hint">Голы записываются нажатием на табло. В этом матче: ${live.g||0}.</p><button class="primary" data-act="closesheet">Готово</button>`;
+    h=`<h2><i class="dot" style="background:${P.team.color}"></i>${esc(P.name)}</h2><p class="sub">Отметки записываются в текущий матч</p><div class="list">${STATS.filter(s=>s[0]!=='g').map(([k,n])=>`<div class="row"><span class="grow1"><span class="ico">${EMO[k]}</span>${n}</span><span class="stepper"><button data-act="pstat" data-k="${k}" data-d="-1" aria-label="Минус">−</button><b>${live[k]||0}</b><button data-act="pstat" data-k="${k}" data-d="1" aria-label="Плюс">+</button></span></div>`).join('')}</div><p class="hint">Голы записываются нажатием на табло. В этом матче: ${live.g||0}.</p><button class="primary" data-act="closesheet">Готово</button>`;
+  }else if(sh.type==='event'){
+    const t=teamOf(g,sh.team);
+    h=`<h2>Что произошло?</h2><p class="sub">${esc(t.name)}</p><div class="list">${STATS.map(([k,n])=>`<button class="row" data-act="pickevent" data-k="${k}"><span class="grow1"><span class="ico">${EMO[k]}</span>${n}</span></button>`).join('')}</div>`;
+  }else if(sh.type==='evplayer'){
+    const t=teamOf(g,sh.team);
+    h=`<h2>${EMO[sh.k]} ${SNAME[sh.k]}: кто?</h2><p class="sub">${esc(t.name)}</p><div class="list">${t.players.map(p=>`<button class="row" data-act="pickevplayer" data-pid="${p.id}"><span class="num">${esc(p.num||'')}</span><span class="grow1">${esc(p.name)}</span></button>`).join('')}</div>`;
+  }else if(sh.type==='match'){
+    h=matchDetail(g,sh.id);
   }else if(sh.type==='team'){
     const other=g.onField[1-sh.slot];
     h=`<h2>Какая команда играет?</h2><div class="list">${g.teams.filter(t=>t.id!==other).map(t=>`<button class="row" data-act="setteam" data-id="${t.id}"><span class="grow1"><i class="dot" style="background:${t.color}"></i>${esc(t.name)}</span></button>`).join('')}</div>`;
   }else if(sh.type==='cols'){
-    h=`<h2>Столбцы статистики</h2><div class="list">${STATS.filter(s=>s[0]!=='g'&&s[0]!=='a').map(([k,n])=>`<button class="toggle" data-act="col" data-k="${k}" aria-pressed="${!!S.settings.cols[k]}"><span>${n}</span><span class="sw"></span></button>`).join('')}</div><button class="primary" style="margin-top:14px" data-act="closesheet">Готово</button>`;
+    h=`<h2>Столбцы статистики</h2><div class="list">${STATS.map(([k,n])=>`<button class="toggle" data-act="col" data-k="${k}" aria-pressed="${!!S.settings.cols[k]}"><span>${EMO[k]} ${n}</span><span class="sw"></span></button>`).join('')}</div><button class="primary" style="margin-top:14px" data-act="closesheet">Готово</button>`;
   }else if(sh.type==='best'){
     h=`<h2>Лучшие игроки вечера</h2>${bestList(g,false)}`;
   }else if(sh.type==='history'){
     const ms=[...g.matches].reverse();
-    h=`<h2>История игр</h2>`+(ms.length?`<div class="list">${ms.map((m,i)=>{const A=teamOf(g,m.a),B=teamOf(g,m.b);if(!A||!B)return '';const idx=g.matches.length-i;return `<div class="match"><span class="grow1"><i class="dot" style="background:${A.color}"></i>${esc(A.name)}</span><b>${m.sa} : ${m.sb}</b><span class="grow1 r">${esc(B.name)}<i class="dot" style="background:${B.color};margin:0 0 0 8px"></i></span></div>`}).join('')}</div>`:'<p class="hint">Завершённых матчей пока нет.</p>');
+    h=`<h2>История игр</h2>`+(ms.length?'<p class="sub">Нажмите на матч, чтобы увидеть, кто и когда забил</p>':'')+(ms.length?`<div class="list">${ms.map((m,i)=>{const A=teamOf(g,m.a),B=teamOf(g,m.b);if(!A||!B)return '';const idx=g.matches.length-i;return `<button class="match" data-act="matchdetail" data-id="${m.id}"><span class="grow1"><i class="dot" style="background:${A.color}"></i>${esc(A.name)}</span><b>${m.sa} : ${m.sb}</b><span class="grow1 r">${esc(B.name)}<i class="dot" style="background:${B.color};margin:0 0 0 8px"></i></span></button>`}).join('')}</div>`:'<p class="hint">Завершённых матчей пока нет.</p>');
   }else if(sh.type==='all'){
     h=`<h2>Результаты всех игр</h2>${standingsTable(g,true)}<h2 class="sec">Игроки</h2>${playersTable(g,true,false)}<h2 class="sec">Лучшие игроки</h2>${bestList(g,true)}<button class="secondary" style="color:var(--danger)" data-act="resetall">Сбросить результаты всех игр</button>`;
   }else if(sh.type==='info'){
-    h=`<h2>Как это работает</h2><dl class="legend"><div><dt>⇄</dt><dd>Поменять команды местами</dd></div><div><dt>▶ ❚❚</dt><dd>Запустить и остановить таймер</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><dl class="legend"><div><dt>И</dt><dd>Игр</dd></div><div><dt>В</dt><dd>Выигрыши</dd></div><div><dt>Н</dt><dd>Ничьи</dd></div><div><dt>П</dt><dd>Поражения</dd></div><div><dt>+/-</dt><dd>Забитые и пропущенные голы</dd></div><div><dt>РГ</dt><dd>Разница голов</dd></div><div><dt>ОЧК</dt><dd>Очки: победа 3, ничья 1</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><dl class="legend"><div><dt>⚽</dt><dd>Гол</dd></div><div><dt>А</dt><dd>Ассист</dd></div><div><dt>С</dt><dd>Сейв</dd></div><div><dt>О</dt><dd>Отбор мяча</dd></div><div><dt>Д</dt><dd>Дриблинг</dd></div><div><dt>У</dt><dd>Удар</dd></div><div><dt>П</dt><dd>Пас</dd></div><div><dt><i class="card y"></i></dt><dd>Жёлтая карточка</dd></div><div><dt><i class="card r"></i></dt><dd>Красная карточка</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><p class="hint">При ничьей уходит команда, которая играет дольше. Если серии равны, уходит команда слева. «Игр подряд» показывает, сколько матчей команда провела на поле подряд.</p>`;
+    h=`<h2>Как это работает</h2><dl class="legend"><div><dt>⇄</dt><dd>Поменять команды местами</dd></div><div><dt>▶ ❚❚</dt><dd>Запустить и остановить таймер</dd></div><div><dt>▼▲</dt><dd>Сортировка: нажмите на значок в заголовке столбца</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><dl class="legend"><div><dt>И</dt><dd>Игр</dd></div><div><dt>В</dt><dd>Выигрыши</dd></div><div><dt>Н</dt><dd>Ничьи</dd></div><div><dt>П</dt><dd>Поражения</dd></div><div><dt>+/-</dt><dd>Забитые и пропущенные голы</dd></div><div><dt>РГ</dt><dd>Разница голов</dd></div><div><dt>ОЧК</dt><dd>Очки: победа 3, ничья 1</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><dl class="legend"><div><dt>⚽</dt><dd>Гол</dd></div><div><dt>👟</dt><dd>Ассист</dd></div><div><dt>🧤</dt><dd>Сейв</dd></div><div><dt>🛡️</dt><dd>Отбор мяча</dd></div><div><dt>💨</dt><dd>Дриблинг</dd></div><div><dt>🎯</dt><dd>Удар</dd></div><div><dt>🔁</dt><dd>Пас</dd></div><div><dt>🟨</dt><dd>Жёлтая карточка</dd></div><div><dt>🟥</dt><dd>Красная карточка</dd></div></dl><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><p class="hint">При ничьей уходит команда, которая играет дольше. Если серии равны, уходит команда слева. «Игр подряд» показывает, сколько матчей команда провела на поле подряд.</p>`;
   }else if(sh.type==='color'){
     const cur_=draft.teams[draft.tab].color;
     h=`<h2>Цвет команды</h2><div class="colors">${COLORS.map(([c,n])=>`<button style="background:${c}" aria-label="${n}" aria-pressed="${c===cur_}" data-act="setcolor" data-c="${c}"></button>`).join('')}</div>`;
@@ -492,7 +562,7 @@ function sheetView(){
     const t=S.settings.theme;
     h=`<h2>Настройки</h2><p class="sub">Оформление</p><div class="seg">${[['auto','Как в системе'],['light','Светлое'],['dark','Тёмное']].map(([k,n])=>`<button aria-pressed="${t===k}" data-act="theme" data-v="${k}">${n}</button>`).join('')}</div><p class="hint">Игры и результаты хранятся только на этом устройстве, без аккаунта.</p><button class="secondary" style="color:var(--danger)" data-act="wipe">Удалить все игры</button>`;
   }
-  return `<div class="backdrop" data-act="closesheet"><div class="panel" role="dialog" aria-modal="true">${h}</div></div>`;
+  return `<div class="backdrop${sh.type==='confirm'?' mid':''}" data-act="closesheet"><div class="panel" role="dialog" aria-modal="true">${h}</div></div>`;
 }
 
 /* ---------- render ---------- */
@@ -508,7 +578,8 @@ const openSheet=o=>{sheet=o;render()};
 const closeSheet=()=>{sheet=null;render()};
 function ask(text,ok,fn,danger){confirmFn=fn;openSheet({type:'confirm',text,ok,danger})}
 function nowRemaining(g){return Math.max(0,Math.ceil((g.live.endAt-Date.now())/1000))}
-function startTimer(g){g.live.running=true;g.live.started=true;g.live.endAt=Date.now()+g.live.remaining*1000}
+function startTimer(g){g.live.running=true;g.live.started=true;if(!g.live.startedAt)g.live.startedAt=Date.now();g.live.endAt=Date.now()+g.live.remaining*1000}
+function elapsed(g){const L=g.live,rem=L.running?nowRemaining(g):L.remaining;return Math.max(0,g.minutes*60-rem)}
 
 function saveForm(){
   syncDraft();const d=draft;
@@ -558,18 +629,35 @@ document.addEventListener('click',e=>{
     case 'addplayer':syncDraft();draft.teams[draft.tab].players.push({id:uid(),name:'',num:''});render();break;
     case 'delplayer':syncDraft();draft.teams[draft.tab].players.splice(+D.i,1);render();break;
     /* game */
-    case 'goal':{
-      const tid=D.team,team=teamOf(g,tid);
-      if(!team.players.length){addGoal(g,tid);save();render();break}
-      openSheet({type:'scorer',team:tid});break;
+    case 'goal':openSheet({type:'event',team:D.team});break;
+    case 'pickevent':{
+      const tid=sheet.team,team=teamOf(g,tid);
+      if(D.k==='g'){
+        if(!team.players.length){addGoal(g,tid,null,null,elapsed(g));save();sheet=null;render()}
+        else{sheet={type:'scorer',team:tid};render()}
+      }else if(!team.players.length){toast('Добавьте игроков в команду через «Редактировать игру»')}
+      else{sheet={type:'evplayer',team:tid,k:D.k};render()}
+      break;
     }
+    case 'pickevplayer':{
+      const pid=D.pid,k=sheet.k,P=playerStats(g,false).find(p=>p.id===pid);
+      addMoment(g,pid,k,elapsed(g));save();sheet=null;render();
+      toast(EMO[k]+' '+SNAME[k]+': '+(P?P.name:''),'Отменить',()=>{removeMoment(g,pid,k);save();render()});
+      break;
+    }
+    case 'sortp':{
+      sortP=sortP&&sortP.k===D.k?{k:D.k,d:sortP.d==='desc'?'asc':'desc'}:{k:D.k,d:'desc'};
+      const pn=$('.panel'),top=pn?pn.scrollTop:0,wy=window.scrollY;
+      render();const p2=$('.panel');if(p2)p2.scrollTop=top;window.scrollTo(0,wy);break;
+    }
+    case 'matchdetail':openSheet({type:'match',id:D.id});break;
     case 'pickscorer':{
       const tid=sheet.team,pid=D.pid||null,team=teamOf(g,tid);
-      if(!pid||team.players.filter(p=>p.id!==pid).length===0){addGoal(g,tid,pid);save();sheet=null;render()}
+      if(!pid||team.players.filter(p=>p.id!==pid).length===0){addGoal(g,tid,pid,null,elapsed(g));save();sheet=null;render()}
       else{sheet={type:'assist',team:tid,scorer:pid};render()}
       break;
     }
-    case 'pickassist':addGoal(g,sheet.team,sheet.scorer,D.pid||null);save();sheet=null;render();break;
+    case 'pickassist':addGoal(g,sheet.team,sheet.scorer,D.pid||null,elapsed(g));save();sheet=null;render();break;
     case 'ungoal':undoGoal(g,D.team);save();render();break;
     case 'swap':g.onField=[g.onField[1],g.onField[0]];save();render();break;
     case 'pickteam':
@@ -591,7 +679,7 @@ document.addEventListener('click',e=>{
     case 'finish':{
       const go=()=>{finishMatch(g);keepAwake(false);save();sheet=null;render();
         toast('Матч записан','Отменить',()=>{if(g.undo){const s=JSON.parse(g.undo);Object.keys(g).forEach(k=>delete g[k]);Object.assign(g,s,{undo:null});save();render()}})};
-      go();break;
+      ask('Вы точно хотите завершить этот матч?','Завершить',go,true);break;
     }
     case 'resetlive':ask('Сбросить этот матч? Счёт и отметки игроков обнулятся.','Сбросить',()=>{g.live=freshLive(g);keepAwake(false);save();sheet=null;render()},true);break;
     case 'snd':
@@ -599,8 +687,9 @@ document.addEventListener('click',e=>{
     case 'addsound':$('#snd-file').click();break;
     case 'player':openSheet({type:'player',pid:D.pid});break;
     case 'pstat':{
-      const pid=sheet.pid,st=g.live.stats[pid]||(g.live.stats[pid]=emptyStat());
-      st[D.k]=Math.max(0,(st[D.k]||0)+(+D.d));save();render();break;
+      const pid=sheet.pid;
+      if(+D.d>0)addMoment(g,pid,D.k,elapsed(g));else removeMoment(g,pid,D.k);
+      save();render();break;
     }
     case 'cols':openSheet({type:'cols'});break;
     case 'col':S.settings.cols[D.k]=S.settings.cols[D.k]?0:1;save();render();break;
